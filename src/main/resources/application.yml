@@ -1,0 +1,41 @@
+server:
+  port: 7748
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lucy_draw?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: root
+  rabbitmq:
+    username: admin
+    password: admin
+    virtual-host: /lucky_draw
+    publisher-confirm-type: correlated
+    publisher-returns: true  #开启发送失败退回
+    listener:
+      simple:
+        acknowledge-mode: manual #采用手动应答
+#        concurrency: 1 # 消费者最小数量
+#        max-concurrency: 30 #消费者最大数量
+#        prefetch: 1 # 每个消费者可能未完成的最大未确认消息数量
+        retry: # 消息发送失败重试相关配置
+          max-attempts: 3
+          enabled: true #是否支持重试
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+
+jwt:
+  pubKeyPath: /rsa/rsa-key.pub # 公钥地址
+  priKeyPath: /rsa/rsa-key # 私钥地址
+  token:
+    expire: 120 #过期时间设置 单位分钟 设置两个小时
+    refreshTime: 60  # 刷新token的时间间隔
+    tokenName: Authorization # token名称
+  allowPaths:
+    - /
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+

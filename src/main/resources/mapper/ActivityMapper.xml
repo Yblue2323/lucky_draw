@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yblue.lucky_draw.mapper.ActivityMapper">
+
+
+    <select id="listActivityByUser" resultType="com.yblue.lucky_draw.domain.Activity">
+        select a.* from tb_activity a,tb_user_activity ua
+        where a.activity_id=ua.activity_id
+        and ua.user_id= #{userId}
+        <if test="null != isDelete">
+            and a.is_delete=#{isdDelete}
+        </if>
+        order by a.activity_id
+    </select>
+    <select id="listActivityExecute" resultType="com.yblue.lucky_draw.domain.Activity">
+        SELECT * FROM
+        `tb_activity`
+        WHERE 1=1
+        AND activity_start_time &lt; NOW()
+        AND activity_end_time &gt; NOW()
+    </select>
+</mapper>
